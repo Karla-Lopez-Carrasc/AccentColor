@@ -24,31 +24,23 @@ class HomeViewController: UIViewController {
         picsButton.setImage(UIImage(systemName: imageType.isOn ? "dog.fill" :
                                         "cat.fill"), for: .normal)
         customTextField.isEditable = customTextSwitch.isOn
+        setBarButtonItemGroup()
         // Do any additional setup after loading the view.
     }
     
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let feedViewController = segue.destination as? FeedViewController{
-            
-        }else if segue.identifier == "HomeInformationSegue", let InformationViewController = segue.destination as? InformationViewController{
-            if customTextSwitch.isOn{
-                InformationViewController.informationText = customTextField.text
-            }
-        }
-        
-    }
+    
     
 //
 //    @IBAction func picsButtonTapped(_ sender: Any) {
 //    }
     
-    @IBAction func loggOutButtonTapped(_ sender: Any) {
-        self.navigationController?.dismiss(animated: true)
-    }
+//    @IBAction func loggOutButtonTapped(_ sender: Any) {
+//        self.navigationController?.dismiss(animated: true)
+//    }
     
-    @IBAction func informationButtonTapped(_ sender: Any){
+    @objc func informationButtonTapped(_ sender: Any){
         if customTextSwitch.isOn{
             if customTextField.text != ""{
                 navigateToInformationController()                //homeInformationSegue
@@ -64,8 +56,20 @@ class HomeViewController: UIViewController {
         }
     }
     
+    private func setBarButtonItemGroup(){
+        let logoutButton = UIBarButtonItem(title: "Logout", image: UIImage(systemName: "multiply.circle.fill"), target: self, action: #selector(logout))
+        let informationButton = UIBarButtonItem(title: "Information", image: UIImage(systemName: "info.circle.fill"), target: self, action: #selector(informationButtonTapped))
+        navigationItem.centerItemGroups = [UIBarButtonItemGroup.fixedGroup(items: [logoutButton, informationButton])]
+    }
+    
+    @objc
+    private func logout(){
+        navigationController?.dismiss(animated: true)
+
+    }
+    
     private func navigateToInformationController(){
-        guard let infoViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "InformationViewController") as? InformationViewController else { return }
+        let infoViewController = InformationViewController(nibName: nil, bundle: nil)
         if customTextSwitch.isOn{
             infoViewController.informationText = customTextField.text
         }
@@ -85,9 +89,11 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func picsButtonTapped(_ sender: UIButton) {
-        guard let feedViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FeedViewController") as? FeedViewController else { return }
+        let feedViewController = FeedViewController(nibName: nil, bundle: nil)
         feedViewController.pictureType = imageType.isOn ?.dog : .cat
         feedViewController.showCaption = captionSwitch.isOn
+        
+        navigationController?.pushViewController(feedViewController, animated: true)
     }
     
 

@@ -8,25 +8,25 @@ import UIKit
 import Foundation
 enum PictureType{
     case dog, cat
-        
-    var captionedImages: [(image: UIImage, caption: String)]{
+    
+    var captionedImages: [CaptionImage]{
         switch self{
         case .dog:
             return [
                 //FORMAS DE INICIALIZAR IMAGENES DESDE ASSSETS
-                (UIImage.dog1, "Peluzo"),
-                (UIImage(resource: .dog2), "Fido"),
-                (UIImage(named: "dog-3") ?? UIImage(), "Milaneso")
+                .init(image: UIImage.dog1, caption: "Peluzo"),
+                .init(image: UIImage(resource: .dog2), caption: "Fido"),
+                .init(image: UIImage(named: "dog-3") ?? UIImage(), caption: "Milaneso")
             ]
         case .cat:
             return [
-                (UIImage.cat1, "Milo"),
-                (UIImage.cat2, "Tolacoyo"),
-                (UIImage.cat3, "Frostinky")
+                .init(image: UIImage.cat1, caption: "Milo"),
+                .init(image: UIImage.cat2, caption: "Tolacoyo"),
+                .init(image: UIImage.cat3, caption: "Frostinky")
             ]
         }
+    }
 }
-
     /*
     // MARK: - Navigation
 
@@ -36,5 +36,11 @@ enum PictureType{
         // Pass the selected object to the new view controller.
     }
     */
+    
+    
+struct CaptionImage {
+        var image: UIImage
+        var caption: String
+    }
 
-}
+
