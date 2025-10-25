@@ -9,16 +9,16 @@ import UIKit
 
 final class LoginViewController: UIViewController {
     
-//    propiedad que nos ayuda a ligar un elmento visual con nuestro controlador
+    //    propiedad que nos ayuda a ligar un elmento visual con nuestro controlador
     @IBOutlet weak var userField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
     }
-
+    
     @IBAction func loginButtonTapped(_ sender: UIButton){
         print("user", userField.text)
         print("password", passwordField.text)
@@ -26,7 +26,11 @@ final class LoginViewController: UIViewController {
     }
     
     private func logIn(){
-        performSegue(withIdentifier: "loginHomeSegue", sender: nil)
+        //        performSegue(withIdentifier: "loginHomeSegue", sender: nil)
+        let navigationController = UIStoryboard(name: "Main", bundle:
+            nil).instantiateViewController(withIdentifier: "BaseNavigationController")
+        navigationController.modalPresentationStyle = .fullScreen
+        navigationController.modalTransitionStyle = .flipHorizontal
+        present(navigationController, animated: true)
     }
 }
-

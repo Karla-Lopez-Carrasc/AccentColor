@@ -31,8 +31,7 @@ class HomeViewController: UIViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let feedViewController = segue.destination as? FeedViewController{
-            feedViewController.pictureType = imageType.isOn ?.dog : .cat
-            feedViewController.showCaption = captionSwitch.isOn
+            
         }else if segue.identifier == "HomeInformationSegue", let InformationViewController = segue.destination as? InformationViewController{
             if customTextSwitch.isOn{
                 InformationViewController.informationText = customTextField.text
@@ -52,8 +51,7 @@ class HomeViewController: UIViewController {
     @IBAction func informationButtonTapped(_ sender: Any){
         if customTextSwitch.isOn{
             if customTextField.text != ""{
-                performSegue(withIdentifier: "HomeInformationSegue", sender: nil)
-                //homeInformationSegue
+                navigateToInformationController()                //homeInformationSegue
             }else{
                 let alertController = UIAlertController(title: nil, message: "PAdd custom text", preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
@@ -62,9 +60,18 @@ class HomeViewController: UIViewController {
             }
         }else{
             //HomeInformationSegue
-            performSegue(withIdentifier: "HomeInformationSegue", sender: nil)
+            navigateToInformationController()
         }
     }
+    
+    private func navigateToInformationController(){
+        guard let infoViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "InformationViewController") as? InformationViewController else { return }
+        if customTextSwitch.isOn{
+            infoViewController.informationText = customTextField.text
+        }
+        present(infoViewController, animated: true)
+    }
+    
     
 
     @IBAction func imageTypeSwitchValueChanged(_ sender: UISwitch) {
@@ -77,6 +84,11 @@ class HomeViewController: UIViewController {
         customTextField.isEditable = sender.isOn
     }
     
+    @IBAction func picsButtonTapped(_ sender: UIButton) {
+        guard let feedViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FeedViewController") as? FeedViewController else { return }
+        feedViewController.pictureType = imageType.isOn ?.dog : .cat
+        feedViewController.showCaption = captionSwitch.isOn
+    }
     
 
 }
